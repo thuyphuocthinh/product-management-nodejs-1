@@ -1,8 +1,20 @@
-doctype html
-html(lang="en")
-    head
-        meta(charset="UTF-8")
-        meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        title Trang sản phẩm
-    body 
-        h1 Trang sản phẩm
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main
+    .container.my-3 
+        .row 
+            .col-12 
+                +box-head("Danh sách sản phẩm")
+
+        .row 
+            -for(let i = 0; i < products.length; i++)
+                .col-12.col-lg-4.mb-3 
+                    .product-item 
+                        .inner-image 
+                            img(src=products[i].thumbnail, alt=products[i].title)
+                        .inner-content 
+                            h3.inner-title #{products[i].title}
+                            .inner-price-new #{products[i].newPrice}
+                            .inner-price-old #{products[i].price}
+                            .inner-discount #{products[i].discountPercentage}

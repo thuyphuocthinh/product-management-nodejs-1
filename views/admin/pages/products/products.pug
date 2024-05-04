@@ -1,0 +1,37 @@
+extend ../../layouts/default.pug
+
+block main 
+    .main
+        h1 Trang sản phẩm
+    
+        table.table.table-hover.table-sm.align-middle 
+            thead 
+                tr 
+                    th STT
+                    th Hình ảnh
+                    th Tiêu đề
+                    th Giá
+                    th Trạng thái
+                    th Hành động 
+
+            tbody 
+                -for(let i = 0; i < products.length; i++)
+                    tr 
+                        td #{i + 1}
+                        td 
+                            img(
+                                src=products[i].thumbnail
+                                height="auto"
+                                alt="Sản phẩm"
+                            ).productImg
+                        td= products[i].title
+                        td $#{products[i].price} 
+                        if (products[i].status === "active")
+                            td 
+                                span.active= products[i].status
+                        else    
+                            td
+                                span.inactive= products[i].status
+                        td 
+                            button.btn.btn-primary.me-2 Sửa
+                            button.btn.btn-danger Xóa

@@ -1,0 +1,76 @@
+:root {
+    --sidebar-width: 150px;
+    --header-height: 80px;
+}
+/* header */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--header-height);
+    background-color: rgb(255, 206, 116);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+/* sider */
+.sider {
+    position: fixed;
+    top: 80px;
+    min-height: 100vh;
+    width: var(--sidebar-width);
+    background-color: rgb(204, 133, 0);
+    color: white;
+    font-size: 16px;
+}
+
+.sider a {
+    color: white;
+    display: block;
+    cursor: pointer;
+    padding: .5rem;
+}
+
+.sider a:hover {
+    background-color: rgb(164, 119, 37);
+}
+
+/* mainContent */
+.mainContent {
+    position: relative;
+    top: 80px;
+}
+/* main */
+
+.main {
+    padding: 1rem 1rem;
+    margin-left: var(--sidebar-width);
+}
+
+/* products */
+.productImg {
+    width: 50px;
+}
+
+.active {
+    background-color: green;
+    color: white;
+    padding: .1rem .2rem;
+    border-radius: 5px;
+}
+
+.inactive {
+    background-color: red;
+    color: white;
+    padding: .1rem .2rem;
+    border-radius: 5px;
+}
+
+/* Responsive */
+@media screen and (max-width: 576px) {
+    .main {
+        margin-left: 0;
+    }
+}
