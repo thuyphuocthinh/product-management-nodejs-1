@@ -1,6 +1,6 @@
 :root {
     --sidebar-width: 150px;
-    --header-height: 80px;
+    --header-height: 50px;
 }
 /* header */
 .header {
@@ -18,7 +18,7 @@
 /* sider */
 .sider {
     position: fixed;
-    top: 80px;
+    top: 50px;
     min-height: 100vh;
     width: var(--sidebar-width);
     background-color: rgb(204, 133, 0);
@@ -40,7 +40,7 @@
 /* mainContent */
 .mainContent {
     position: relative;
-    top: 80px;
+    top: 50px;
 }
 /* main */
 
@@ -54,14 +54,14 @@
     width: 50px;
 }
 
-.active {
+.activeStatus {
     background-color: green;
     color: white;
     padding: .1rem .2rem;
     border-radius: 5px;
 }
 
-.inactive {
+.inactiveStatus {
     background-color: red;
     color: white;
     padding: .1rem .2rem;
