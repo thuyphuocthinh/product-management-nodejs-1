@@ -75,10 +75,29 @@ const changeMultiStatus = () => {
   }
 };
 
+const deleteProduct = () => {
+  const btnDeleteLists = document.querySelectorAll("[btn-delete]");
+  if (btnDeleteLists && btnDeleteLists.length > 0) {
+    const formDeleteItem = document.querySelector("#form-delete-item");
+    const path = formDeleteItem.getAttribute("data-path");
+    btnDeleteLists.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const isConfirm = confirm("Bạn có chắc xóa sản phẩm này?");
+        if (isConfirm) {
+          const dataId = btn.getAttribute("data-id");
+          const action = `${path}/${dataId}?_method=DELETE`;
+          formDeleteItem.action = action;
+          formDeleteItem.submit();
+        }
+      });
+    });
+  }
+};
+
 const productApp = () => {
   changeStatus();
   changeMultiStatus();
+  deleteProduct();
 };
 
 productApp();
-
