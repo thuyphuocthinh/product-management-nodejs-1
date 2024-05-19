@@ -68,6 +68,10 @@
     border-radius: 5px;
 }
 
+.alert-hide {
+    display: none !important;
+}
+
 /* Responsive */
 @media screen and (max-width: 576px) {
     .main {

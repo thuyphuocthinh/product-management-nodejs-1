@@ -47,45 +47,68 @@ const pagination = () => {
   }
 };
 
-// const prevNextPageHandle = () => {
-//   const prevPageBtn = document.querySelector("#prevPageBtn");
-//   const nextPageBtn = document.querySelector("#nextPageBtn");
-//   let url = new URL(window.location.href);
-//   let currentPage = Number(url.searchParams.get("page"));
-//   if (prevPageBtn) {
-//     if (currentPage === 1) {
-//       prevPageBtn.disabled = true;
-//       prevPageBtn.style.cursor = "no-drop";
-//     } else {
-//       prevPageBtn.disabled = false;
-//       prevPageBtn.addEventListener("click", () => {
-//         url.searchParams.set("page", currentPage - 1);
-//         window.location.href = url.href;
-//       });
-//     }
-//   }
-//   if (nextPageBtn) {
-//     const maxPage = Number(nextPageBtn.getAttribute("max-page"));
-//     if (currentPage === maxPage) 
-//     {
-//       nextPageBtn.disabled = true;
-//       nextPageBtn.style.cursor = "no-drop";
-//     }
-//     else {
-//       nextPageBtn.disabled = false;
-//       nextPageBtn.addEventListener("click", () => {
-//         url.searchParams.set("page", currentPage + 1);
-//         window.location.href = url.href;
-//       });
-//     }
-//   }
-// };
+/*
+const prevNextPageHandle = () => {
+  const prevPageBtn = document.querySelector("#prevPageBtn");
+  const nextPageBtn = document.querySelector("#nextPageBtn");
+  let url = new URL(window.location.href);
+  let currentPage = Number(url.searchParams.get("page"));
+  if (prevPageBtn) {
+    if (currentPage === 1) {
+      prevPageBtn.disabled = true;
+      prevPageBtn.style.cursor = "no-drop";
+    } else {
+      prevPageBtn.disabled = false;
+      prevPageBtn.addEventListener("click", () => {
+        url.searchParams.set("page", currentPage - 1);
+        window.location.href = url.href;
+      });
+    }
+  }
+  if (nextPageBtn) {
+    const maxPage = Number(nextPageBtn.getAttribute("max-page"));
+    if (currentPage === maxPage) 
+    {
+      nextPageBtn.disabled = true;
+      nextPageBtn.style.cursor = "no-drop";
+    }
+    else {
+      nextPageBtn.disabled = false;
+      nextPageBtn.addEventListener("click", () => {
+        url.searchParams.set("page", currentPage + 1);
+        window.location.href = url.href;
+      });
+    }
+  }
+};
+*/
 
+// Upload
+const handlePreviewUpload = () => {
+  const formUploadImage = document.querySelector("[upload-image]");
+  if (formUploadImage) {
+    const uploadInput = formUploadImage.querySelector("[upload-image-input]");
+    const uploadPreview = formUploadImage.querySelector(
+      "[upload-image-preview]"
+    );
+    if (uploadInput) {
+      uploadInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          if (uploadPreview) {
+            uploadPreview.src = URL.createObjectURL(file);
+          }
+        }
+      });
+    }
+  }
+};
 
 function app() {
   search();
   filterByStatus();
   pagination();
+  handlePreviewUpload();
 }
 
 app();

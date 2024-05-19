@@ -1,0 +1,45 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main 
+    .container.my-3 
+        .row 
+            .col-12
+                if (product.title)
+                    h1(class="mb-4") #{product.title}
+        
+                if (product.price)
+                    div(class="mb-4")
+                        <b> Giá: </b> #{product.price}
+                
+                if (product.title)
+                    div(class="mb-4") 
+                        <b> GIảm giá: </b> #{product.discountPercentage}%
+
+                if (product.stock)
+                    div(class="mb-4")
+                        <b> Còn lại: </b>  #{product.stock}
+
+                if (product.thumbnail)
+                    div(class="mb-4")
+                        <b> Ảnh </b>
+                        img(
+                            src=product.thumbnail 
+                            style="width: 100px"
+                        )
+
+                if (product.status)
+                    div(class="mb-4")
+                        <b> Trạng thái: </b>
+                        if (product.status === "active")
+                            span Hoạt động 
+                        else 
+                            span Không hoạt động
+                
+                if (product.position)
+                    div(class="mb-4")
+                        <b> Vị trí: </b> #{product.position}
+
+                if (product.description)
+                    div(class="mb-4")
+                        <b> Mô tả: </b> #{product.description}

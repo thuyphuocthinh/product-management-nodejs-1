@@ -1,0 +1,22 @@
+mixin alertSuccess(time)
+     if (messages.success)
+            .message.info 
+                div(
+                    class="alert alert-success"
+                    show-alert
+                    data-time=time
+                )
+                    span= messages.success
+                    button.d-block.ms-auto.alert-btn-close X
+
+
+mixin alertError(time)
+     if (messages.error)
+            .message.info 
+                div(
+                    class="alert alert-danger"
+                    show-alert
+                    data-time=time
+                )
+                    span= messages.error
+                    button.d-block.ms-auto.alert-btn-close X

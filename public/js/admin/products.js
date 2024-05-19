@@ -25,7 +25,10 @@ const changeMultiStatus = () => {
   );
   const ids = document.querySelector("input[name='ids']");
   const formChangeMulti = document.querySelector("[form-change-multi]");
+  const selectOption = document.querySelector("[select-option]");
+  let typeChange = "";
   let idsArr = [];
+
   // check
   if (checkBoxAll && checkBoxes && ids) {
     checkBoxAll.addEventListener("click", () => {
@@ -33,7 +36,10 @@ const changeMultiStatus = () => {
         checkBoxes.forEach((checkBox) => {
           const value = checkBox.getAttribute("value");
           checkBox.checked = true;
-          idsArr.push(value);
+          const position = checkBox
+            .closest("tr")
+            .querySelector("input[name='position'").value;
+          idsArr.push(`${value}-${position}`);
         });
       } else {
         checkBoxes.forEach((checkBox) => {
@@ -41,7 +47,6 @@ const changeMultiStatus = () => {
         });
         idsArr = [];
       }
-      ids.value = idsArr.join(",");
     });
 
     checkBoxes.forEach((checkBox) => {
@@ -49,10 +54,13 @@ const changeMultiStatus = () => {
         const numOfCheckBoxes = document.querySelectorAll(
           "[checkbox-multi] tbody input[type='checkbox']:checked"
         );
-        const value = checkBox.getAttribute("value");
-        const valueIndex = idsArr.findIndex((v) => v === value);
+        const valueID = checkBox.getAttribute("value");
+        const valueIndex = idsArr.findIndex((v) => v === valueID);
         if (checkBox.checked) {
-          idsArr.push(value);
+          const position = checkBox
+            .closest("tr")
+            .querySelector("input[name='position'").value;
+          idsArr.push(`${valueID}-${position}`);
         } else {
           if (valueIndex !== -1) {
             idsArr.splice(valueIndex, 1);
@@ -61,16 +69,42 @@ const changeMultiStatus = () => {
         if (numOfCheckBoxes.length === checkBoxes.length)
           checkBoxAll.checked = true;
         else checkBoxAll.checked = false;
-        ids.value = idsArr.join(",");
       });
     });
   }
+
+  selectOption.addEventListener("change", (e) => {
+    const { value } = e.target;
+    typeChange = value;
+    switch (typeChange) {
+      case "changePosition": {
+        ids.value = idsArr.join(",");
+        break;
+      }
+      case "active":
+      case "inactive":
+      case "deleteAll":
+        let tempArr = idsArr.map((id) => {
+          return id.slice(0, id.indexOf("-"));
+        });
+        ids.value = tempArr.join(",");
+        break;
+      default:
+        break;
+    }
+  });
+
   // apply
   if (formChangeMulti) {
     formChangeMulti.addEventListener("submit", (e) => {
       e.preventDefault();
       if (idsArr.length === 0) alert("Vui lòng chọn ít nhất 1 sản phẩm");
-      else formChangeMulti.submit();
+      else if (typeChange === "deleteAll") {
+        let isConfirm = confirm("Do you want to delete these products");
+        if (isConfirm) {
+          formChangeMulti.submit();
+        }
+      } else formChangeMulti.submit();
     });
   }
 };
@@ -94,10 +128,27 @@ const deleteProduct = () => {
   }
 };
 
+const hideAlert = () => {
+  const alert = document.querySelector("[show-alert]");
+  if (alert) {
+    const alertBtnClose = alert.querySelector(".alert-btn-close");
+    const time = parseInt(alert.getAttribute("data-time"));
+    const timeOutId = setTimeout(() => {
+      alert.classList.add("alert-hide");
+    }, time);
+    alertBtnClose.addEventListener("click", () => {
+      console.log("close");
+      alert.classList.add("alert-hide");
+      clearTimeout(timeOutId);
+    });
+  }
+};
+
 const productApp = () => {
   changeStatus();
   changeMultiStatus();
   deleteProduct();
+  hideAlert();
 };
 
 productApp();

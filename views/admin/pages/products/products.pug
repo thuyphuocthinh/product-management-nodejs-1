@@ -3,11 +3,14 @@ include ../../mixins/filterStatus.pug
 include ../../mixins/formSearch.pug
 include ../../mixins/pagination.pug
 include ../../mixins/formChangeMulti.pug
+include ../../mixins/alert.pug
 
 block main 
     .main
         h1 Trang sản phẩm
 
+        +alertSuccess("5000")
+       
         .card.mb-3 
             .card-header Bộ lọc và Tìm kiếm 
             .card-body 
@@ -20,7 +23,14 @@ block main
         .card.mb-3
             .card-header Danh sách sản phẩm 
             .card-body
-                +formChangeMulti(`${prefixAdmin}/products/change-multi?_method=PATCH`)
+                .row
+                    .col-8
+                        +formChangeMulti(`${prefixAdmin}/products/change-multi?_method=PATCH`)
+                    .col-4
+                        a(
+                            href=`${prefixAdmin}/products/create`
+                            class="btn btn-outline-success"
+                        ) + Thêm mới
                 table(
                     class="table table-hover table-sm align-middle"
                     checkbox-multi
@@ -36,6 +46,7 @@ block main
                             th Hình ảnh
                             th Tiêu đề
                             th Giá
+                            th Vị trí
                             th Trạng thái
                             th Hành động 
 
@@ -61,6 +72,14 @@ block main
                                         ).productImg
                                     td= products[i].title
                                     td $#{products[i].price} 
+                                    td
+                                        input(
+                                            type="number"
+                                            min="1"
+                                            value=products[i].position 
+                                            style="width: 50px"
+                                            name="position"
+                                        )
                                     if (products[i].status === "active")
                                         td 
                                             a(
@@ -78,7 +97,12 @@ block main
                                                 button-change-status
                                             ).inactiveStatus= products[i].status
                                     td 
-                                        button.btn.btn-primary.me-2 Sửa
+                                        a(
+                                            href=`${prefixAdmin}/products/edit/${products[i].id}`
+                                        ).btn.btn-primary.me-2 Sửa
+                                        a(
+                                            href=`${prefixAdmin}/products/detail/${products[i].id}`
+                                        ).btn.btn-success.me-2 Chi tiết
                                         button(data-id=products[i].id btn-delete).btn.btn-danger Xóa
 
         +pagination(pagination)

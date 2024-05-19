@@ -6,9 +6,12 @@ mixin formChangeMulti(path)
     )
         .d-flex.align-items-center.gap-1 
             .form-group     
-                select(name="type" class="form-select")
+                select(name="type" class="form-select" select-option)
+                    option(disabled selected) -- Choose action -- 
                     option(value="active") Active
                     option(value="inactive") Inactive
+                    option(value="deleteAll") Delete All
+                    option(value="changePosition") Change position
             .form-group 
                 input(
                     type="text"
