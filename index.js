@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const clientRoute = require("../product-management/routes/client/index.route");
 const adminRoute = require("../product-management/routes/admin/index.route");
 const database = require("./config/database");
@@ -29,14 +30,20 @@ database.connect();
 const port = process.env.PORT;
 
 // static files
-app.use(express.static("public"));
+app.use(express.static(`${__dirname}/public`));
 
 // view engine
-app.set("views", "./views");
+app.set("views", `${__dirname}/views`);
 app.set("view engine", "pug");
 
 // App local variables
 app.locals.prefixAdmin = prefixAdmin;
+
+// TinyMCE
+app.use(
+  "/tinymce",
+  express.static(path.join(__dirname, "node_modules", "tinymce"))
+);
 
 // Routes
 clientRoute(app);

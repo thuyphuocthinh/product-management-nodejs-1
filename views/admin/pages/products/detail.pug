@@ -39,7 +39,7 @@ block main
 
         if (product.description)
             div(class="mb-4")
-                <b> Mô tả: </b> #{product.description}
+                <b> Mô tả: </b> !{product.description}
 
         a(
             href=`${prefixAdmin}/products/edit/${product.id}`

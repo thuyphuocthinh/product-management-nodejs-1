@@ -144,10 +144,40 @@ const hideAlert = () => {
   }
 };
 
+const sortProducts = () => {
+  const sortSelect = document.querySelector("[sort-select]");
+  const sortClearBtn = document.querySelector("[sort-clear]");
+  let url = new URL(window.location.href);
+  if (sortSelect) {
+    sortSelect.addEventListener("change", (e) => {
+      const { value } = e.target;
+      const [sortKey, sortValue] = value.split("-");
+      url.searchParams.set("sortKey", sortKey);
+      url.searchParams.set("sortValue", sortValue);
+      window.location.href = url.href;
+    });
+  }
+  if (sortClearBtn) {
+    sortClearBtn.addEventListener("click", () => {
+      url.searchParams.delete("sortKey");
+      url.searchParams.delete("sortValue");
+      window.location.href = url.href;
+    })
+  }
+  const sortKey = url.searchParams.get("sortKey");
+  const sortValue = url.searchParams.get("sortValue");
+  if (sortKey && sortValue) {
+    const sortString = sortKey + "-" + sortValue;
+    const selectedOption = sortSelect.querySelector(`option[value=${sortString}]`);
+    selectedOption.selected = true;
+  }
+};
+
 const productApp = () => {
   changeStatus();
   changeMultiStatus();
   deleteProduct();
+  sortProducts();
   hideAlert();
 };
 

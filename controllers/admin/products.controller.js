@@ -11,6 +11,7 @@ module.exports.index = async (req, res) => {
     let filter = {
       deleted: false,
     };
+
     if (req.query.status) {
       filter.status = req.query.status;
     }
@@ -21,6 +22,7 @@ module.exports.index = async (req, res) => {
     if (objectSearch.regex) {
       filter.regex = objectSearch.regex;
     }
+
     // pagination
     const countProducts = await Product.countDocuments(filter);
     let objectPagination = paginationHelper.pagination(
@@ -32,9 +34,18 @@ module.exports.index = async (req, res) => {
       countProducts
     );
 
+    // Sort
+    let sort = {};
+    if (req.query.sortKey && req.query.sortValue) {
+      sort[req.query.sortKey] = req.query.sortValue;
+    } else {
+      sort.position = "desc";
+    }
+    // End sort
+
     // Call DB
     let products = await Product.find(filter)
-      .sort({ position: "desc" })
+      .sort(sort)
       .limit(objectPagination.limitItems)
       .skip(objectPagination.skip);
 
@@ -143,10 +154,6 @@ module.exports.createItemPost = async (req, res) => {
     req.body.position = parseInt(req.body.position);
   }
 
-  if (req.file) {
-    req.body.thumbnail = `/uploads/${req.file.filename}`;
-  }
-
   const product = new Product(req.body);
   await product.save();
   req.flash("success", "Created product successfully");
@@ -205,4 +212,3 @@ module.exports.detail = async (req, res) => {
     });
   } catch (error) {}
 };
-

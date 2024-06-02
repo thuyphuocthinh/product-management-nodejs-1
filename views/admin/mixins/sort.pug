@@ -1,0 +1,15 @@
+mixin sort() 
+    .card-header Sắp xếp 
+        .card-body 
+            .row 
+                .col-6 
+                    select.form-select(aria-label='Default select example' sort-select name="sort")
+                        option(disabled=true) Open this select menu
+                        option(value='position-desc') Position DESC
+                        option(value='position-asc') Position ASC
+                        option(value='price-desc') Price DESC
+                        option(value='price-asc') Price ASC
+                        option(value='title-asc') Title A-Z
+                        option(value='title-desc') Title Z-A
+                .col-2
+                    button.btn.btn-primary(sort-clear) Clear

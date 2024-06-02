@@ -1,0 +1,54 @@
+mixin table-tree(items, level = 1)
+    each item, index in items 
+        - const prefix = Array(level + 1).join("-- ")
+        
+        tr 
+            td
+                input(
+                    type="checkbox"
+                    name="id"
+                    value=item.id
+                )
+            td #{index + 1}
+            td 
+                img(
+                    src=item.thumbnail
+                    height="auto"
+                    alt="Sản phẩm"
+                ).productImg
+            td #{prefix}#{item.title}
+            td
+                input(
+                    type="number"
+                    min="1"
+                    value=item.position 
+                    style="width: 50px"
+                    name="position"
+                )
+            if (item.status === "active")
+                td 
+                    a(
+                        href="javascript:;"
+                        data-status="active"
+                        data-id=item.id
+                        button-change-status
+                    ).activeStatus=item.status
+            else    
+                td
+                    a(
+                        href="javascript:;" 
+                        data-status="inactive"
+                        data-id=item.id
+                        button-change-status
+                    ).inactiveStatus=item.status
+            td 
+                a(
+                    href=`${prefixAdmin}/products-category/edit/${item.id}`
+                ).btn.btn-primary.me-2 Sửa
+                a(
+                    href=`${prefixAdmin}/products-category/detail/${item.id}`
+                ).btn.btn-success.me-2 Chi tiết
+                button(data-id=item.id btn-delete).btn.btn-dange  
+        
+        if item.children && item.children.length > 0
+            +table-tree(item.children, level + 1)
