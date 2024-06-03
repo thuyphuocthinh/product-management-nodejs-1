@@ -1,17 +1,13 @@
-extend ../../layouts/default.pug
-include ../../mixins/alert.pug
+extends ../../layouts/default.pug
 include ../../mixins/select-tree.pug
 
 block main 
-    .main
-        h1.mb-4 Thêm mới sản phẩm
-
-        +alertSuccess("5000")
+    .main 
+        h1 Chỉnh sửa danh mục sản phẩm 
 
         form(
-            action=`${prefixAdmin}/products/create`
+            action=`${prefixAdmin}/products-category/edit/${product.id}?_method=PATCH`
             method="POST"
-            id="form-create-product"
             enctype="multipart/form-data"
         )
             div(class="form-group")
@@ -21,20 +17,21 @@ block main
                     class="form-control"
                     id="title"
                     name="title"
+                    value=product.title
                     required
                 ) 
-                +alertError("5000")
 
             div(class="form-group")
-                label(for="product_category_id") Danh mục
+                label(for="parent_id") Danh mục cha
                 select(
+                    type="text"
                     class="form-control"
-                    id="product_category_id"
-                    name="product_category_id"
+                    id="parent_id"
+                    name="parent_id"
                 ) 
                     option(value="" selected disabled=true) -- Chon danh muc cha --
-                    if(categories) 
-                        +select-tree(categories)
+                    if(records) 
+                        +select-tree(records, product.parent_id)
 
             div(class="form-group")
                 label(for="description") Mô tả
@@ -44,43 +41,7 @@ block main
                     name="description"
                     rows="5"
                     required
-                )          
-
-            div(class="form-group")
-                label(for="price") Giá
-                input(
-                    type="number"
-                    class="form-control"
-                    id="price"
-                    name="price"
-                    value="0"
-                    min="0"
-                    required
-                )      
-            
-            div(class="form-group")
-                label(for="discountPercentage") Giảm giá
-                input(
-                    type="number"
-                    class="form-control"
-                    id="discountPercentage"
-                    name="discountPercentage"
-                    min="0"
-                    value="0"
-                    required
-                )  
-
-            div(class="form-group")
-                label(for="stock") Số lượng
-                input(
-                    type="number"
-                    class="form-control"
-                    id="stock"
-                    name="stock"
-                    min="0"
-                    value="0"
-                    required
-                )  
+                ) #{product.description}
 
             div(class="form-group" upload-image)
                 label(for="thumbnail") Ảnh
@@ -90,10 +51,13 @@ block main
                     id="thumbnail"
                     name="thumbnail"
                     accept="image/*"
-                    required
                     upload-image-input
                 )
-                img(id="preview-thumbnail" upload-image-preview)
+                img(
+                    id="preview-thumbnail" 
+                    src=product.thumbnail 
+                    upload-image-preview
+                )
 
             div(class="form-group")
                 label(for="position") Vị trí
@@ -104,6 +68,7 @@ block main
                     name="position"
                     placeholder="Tự động tăng"
                     min="0"
+                    value=product.position
                 )  
         
             div(class="form-group")
@@ -112,7 +77,7 @@ block main
                     id="active"
                     name="status"
                     value="active"
-                    checked 
+                    checked=(product.status == "active")
                     required
                 )  
                 label(for="active") Hoạt động
@@ -121,7 +86,7 @@ block main
                     type="radio"
                     id="inactive"
                     name="status"
-                    value="inactive"
+                    checked=(product.status == "inactive")
                     required
                 )  
                 label(for="inactive") Dừng hoạt động
@@ -129,4 +94,4 @@ block main
             div(class="form-group")
                 button(
                     type="submit"
-                ).btn.btn-primary Tạo mới
+                ).btn.btn-primary Sửa

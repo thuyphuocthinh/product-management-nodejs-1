@@ -7,13 +7,17 @@ const getProductsCategory = async (req, res) => {
     deleted: false,
   };
 
-  const records = await ProductCategory.find(find);
-  const newRecords = tree(records);
+  try {
+    const records = await ProductCategory.find(find);
+    const newRecords = tree(records);
 
-  res.render("admin/pages/products-category/index", {
-    pageTitle: "Danh mục sản phẩm",
-    records: newRecords,
-  });
+    res.render("admin/pages/products-category/index", {
+      pageTitle: "Danh mục sản phẩm",
+      records: newRecords,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 // [GET] /admin/products-category/create
@@ -22,13 +26,17 @@ const getProductsCategoryCreate = async (req, res) => {
     deleted: false,
   };
 
-  const records = await ProductCategory.find(find);
-  const newRecords = tree(records);
+  try {
+    const records = await ProductCategory.find(find);
+    const newRecords = tree(records);
 
-  res.render("admin/pages/products-category/create", {
-    pageTitle: "Tạo danh mục sản phẩm mới",
-    records: newRecords,
-  });
+    res.render("admin/pages/products-category/create", {
+      pageTitle: "Tạo danh mục sản phẩm mới",
+      records: newRecords,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 // [POST] /admin/products-category/create
@@ -49,8 +57,46 @@ const createProductCategory = async (req, res) => {
   }
 };
 
+// [GET] /admin/products-category/edit/:id
+
+const getProductsCategoryEdit = async (req, res) => {
+  try {
+    // Get product
+    const id = req.params.id;
+    const product = await ProductCategory.findOne({ _id: id, deleted: false });
+
+    // Get parent categories
+    let find = {
+      deleted: false,
+    };
+    const records = await ProductCategory.find(find);
+    const newRecords = tree(records);
+    res.render("admin/pages/products-category/edit", {
+      pageTitle: "Chỉnh sửa danh mục sản phẩm",
+      product,
+      records: newRecords,
+    });
+  } catch (error) {
+    res.redirect(`${systemConfig.prefixAdmin}/products-category`);
+    console.log(error);
+  }
+};
+
+const patchProductsCategoryEdit = async (req, res) => {
+  try {
+    const id = req.params.id;
+    req.body.position = parseInt(req.body.position);
+    await ProductCategory.updateOne({ _id: id }, req.body);
+    res.redirect("back");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   getProductsCategory,
   getProductsCategoryCreate,
   createProductCategory,
+  getProductsCategoryEdit,
+  patchProductsCategoryEdit,
 };

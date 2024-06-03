@@ -1,0 +1,46 @@
+extends ../../layouts/default.pug
+
+block main 
+    .main
+        h1 Danh sách nhóm quyền
+
+        .card.mb-3
+            .card-header Danh sách nhóm quyền
+            .card-body
+                .row
+                    .col-8
+                        p Something here
+                    .col-4
+                        a(
+                            href=`${prefixAdmin}/roles/create`
+                            class="btn btn-outline-success"
+                        ) + Thêm mới         
+
+                table(
+                    class="table table-hover table-sm align-middle"
+                    checkbox-multi
+                ) 
+                    thead 
+                        tr 
+                            th STT
+                            th Nhóm quyền
+                            th Mô tả ngắn
+                            th Hành động
+                    tbody 
+                        if (records.length > 0)
+                            each item, index in records 
+                                tr 
+                                    td #{index + 1}
+                                    td #{item.title}
+                                    td #{item.description}
+
+                                    td 
+                                        a(
+                                            href=`${prefixAdmin}/roles/edit/${item.id}`
+                                        ).btn.btn-primary.me-2 Sửa
+                                        a(
+                                            href=`${prefixAdmin}/roles/detail/${item.id}`
+                                        ).btn.btn-success.me-2 Chi tiết
+                                        button(data-id=item.id btn-delete).btn.btn-danger Xóa 
+
+                                           
