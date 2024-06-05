@@ -4,14 +4,20 @@
             li.sidebarItem 
                 a(href=`${prefixAdmin}/dashboard`).sidebarLink Tổng quan
             
-            li.sidebarItem 
-                a(href=`${prefixAdmin}/products-category`).sidebarLink Danh mục sản phẩm
+            if (role.permissions.includes("product-category_view"))
+                li.sidebarItem 
+                    a(href=`${prefixAdmin}/products-category`).sidebarLink Danh mục sản phẩm
+            if (role.permissions.includes("product_view"))
+                li.sidebarItem 
+                    a(href=`${prefixAdmin}/products`).sidebarLink Sản phẩm
+            if (role.permissions.includes("roles_view"))
+                li.sidebarItem 
+                    a(href=`${prefixAdmin}/roles`).sidebarLink Nhóm quyền
             
-            li.sidebarItem 
-                a(href=`${prefixAdmin}/products`).sidebarLink Sản phẩm
-           
-            li.sidebarItem 
-                a(href=`${prefixAdmin}/roles`).sidebarLink Nhóm quyền
-           
-            li.sidebarItem 
-                a(href=`${prefixAdmin}/roles/permissions`).sidebarLink Phân quyền
+            if (role.permissions.includes("roles_permissions"))
+                li.sidebarItem 
+                    a(href=`${prefixAdmin}/roles/permissions`).sidebarLink Phân quyền
+            
+            if (role.permissions.includes("accounts_view"))
+                li.sidebarItem 
+                    a(href=`${prefixAdmin}/accounts`).sidebarLink Danh sách tài khoản

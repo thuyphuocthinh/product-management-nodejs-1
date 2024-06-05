@@ -1,0 +1,38 @@
+extends ../../layouts/auth.pug
+include ../../mixins/alert.pug
+
+block main 
+    +alertError(5000)
+    div.d-flex.align-items-center.justify-content-center.h-100.flex-column
+        h1 Đăng nhập
+
+        div(style="width: 400px;")
+            form(
+                action=`${prefixAdmin}/auth/login`
+                method="POST"
+            ) 
+                .form-group 
+                    label(for="email") Email 
+                    input(
+                        type="email"
+                        class="form-control mb-4"
+                        id="email"
+                        name="email"
+                        required
+                    ) 
+
+                .form-group 
+                    label(for="password") Mật khẩu 
+                    input(
+                        type="password"
+                        class="form-control mb-4"
+                        id="password"
+                        name="password"
+                        required
+                    ) 
+                
+                .form-group 
+                    button(
+                        class="btn btn-primary w-100"
+                        type="submit"
+                    ) Đăng nhập

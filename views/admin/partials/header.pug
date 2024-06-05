@@ -12,4 +12,7 @@ header.header
                         li 
                             a(href="/admin/dashboard") Admin
                         li 
-                            a(href="#") Đăng xuất   
+                            a(
+                                href=`${prefixAdmin}/auth/logout`
+                                class="btn btn-danger"
+                            ) Đăng xuất   

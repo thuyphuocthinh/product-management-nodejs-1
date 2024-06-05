@@ -1,0 +1,60 @@
+extends ../../layouts/default.pug
+
+block main 
+    .main 
+        h1 Danh sách tài khoản 
+
+        .card.mb-3
+            .card-header Danh sách
+            .card-body
+                .row
+                    .col-8
+                    .col-4
+                        a(
+                            href=`${prefixAdmin}/accounts/create`
+                            class="btn btn-outline-success"
+                        ) + Thêm mới      
+
+        table(
+            class="table table-hover table-sm align-middle"
+            checkbox-multi
+        ) 
+            thead 
+                tr 
+                    th STT
+                    th FullName
+                    th Email
+                    th Phone
+                    th Role
+                    th Status
+                    th Actions
+            tbody 
+                if (records.length > 0)
+                    each item, index in records 
+                        tr 
+                            td #{index + 1}
+                            td #{item.fullName}
+                            td #{item.email}
+                            td #{item.phone}
+                            td #{item.role.title}
+                            td 
+                                if (item.status === "active") 
+                                    a(
+                                        href="javascript:;"
+                                        class="badge bg-success"
+                                        data-status="active"
+                                    ) Active 
+                                else 
+                                    a(
+                                        href="javascript:;"
+                                        class="badge bg-danger"
+                                        data-status="inactive"
+                                    ) Inactive
+                            td 
+                                a(
+                                    href=`${prefixAdmin}/accounts/edit/${item.id}`
+                                ).btn.btn-primary.me-2 Sửa
+                                a(
+                                    href=`${prefixAdmin}/accounts/detail/${item.id}`
+                                ).btn.btn-success.me-2 Chi tiết
+                                button(data-id=item.id btn-delete).btn.btn-danger Xóa 
