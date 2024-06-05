@@ -5,6 +5,7 @@ const systemConfig = require("../../config/system");
 const Product = require("../../models/product.model");
 const ProductCategory = require("../../models/products-category.model");
 const { tree } = require("../../helpers/createTree");
+const Accounts = require("../../models/accounts.model");
 
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
@@ -51,6 +52,13 @@ module.exports.index = async (req, res) => {
       .limit(objectPagination.limitItems)
       .skip(objectPagination.skip);
 
+    for (const product of products) {
+      let user = await Accounts.findOne({ _id: product.createdBy.account_id });
+      if (user) {
+        product.createdBy.fullName = user.fullName;
+      }
+    }
+
     res.render("./admin/pages/products/products.pug", {
       pageTitle: "Trang sản phẩm",
       products: products,
@@ -96,9 +104,15 @@ module.exports.changeMultiStatus = async (req, res) => {
     case "deleteAll": {
       await Product.updateMany(
         { _id: { $in: ids } },
-        { deleted: true, deletedAt: new Date() }
+        {
+          deleted: true,
+          deletedBy: {
+            account_id: res.locals.user.id,
+            deleted_at: new Date(),
+          },
+        }
       );
-      req.flash("success", `Deleted all successfully`);
+      req.flash("success", `Deleted ${ids.length} successfully`);
       break;
     }
     case "changePosition": {
@@ -125,9 +139,12 @@ module.exports.deleteItem = async (req, res) => {
   // await Product.deleteOne({ _id: id });
   await Product.deleteOne(
     { _id: id },
-    { deleted: true },
     {
-      deletedAt: new Date(),
+      deleted: true,
+      deletedBy: {
+        account_id: res.locals.user.id,
+        deleted_at: new Date(),
+      },
     }
   );
   req.flash("success", `Deleted product successfully`);
@@ -165,6 +182,10 @@ module.exports.createItemPost = async (req, res) => {
     req.body.position = parseInt(req.body.position);
   }
 
+  req.body.createdBy = {
+    account_id: res.locals.user.id,
+  };
+
   const product = new Product(req.body);
   await product.save();
   req.flash("success", "Created product successfully");
@@ -187,7 +208,7 @@ module.exports.editItem = async (req, res) => {
   res.render("admin/pages/products/edit", {
     pageTitle: "Chỉnh sửa sản phẩm",
     product: product,
-    categories: newCategories
+    categories: newCategories,
   });
 };
 

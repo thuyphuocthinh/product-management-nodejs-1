@@ -3,95 +3,96 @@ include ../../mixins/select-tree.pug
 
 block main 
     .main 
-        h1 Chỉnh sửa danh mục sản phẩm 
+        if (role.permissions.includes("product-category_edit"))
+            h1 Chỉnh sửa danh mục sản phẩm 
 
-        form(
-            action=`${prefixAdmin}/products-category/edit/${product.id}?_method=PATCH`
-            method="POST"
-            enctype="multipart/form-data"
-        )
-            div(class="form-group")
-                label(for="title") Tiêu đề
-                input(
-                    type="text"
-                    class="form-control"
-                    id="title"
-                    name="title"
-                    value=product.title
-                    required
-                ) 
+            form(
+                action=`${prefixAdmin}/products-category/edit/${product.id}?_method=PATCH`
+                method="POST"
+                enctype="multipart/form-data"
+            )
+                div(class="form-group")
+                    label(for="title") Tiêu đề
+                    input(
+                        type="text"
+                        class="form-control"
+                        id="title"
+                        name="title"
+                        value=product.title
+                        required
+                    ) 
 
-            div(class="form-group")
-                label(for="parent_id") Danh mục cha
-                select(
-                    type="text"
-                    class="form-control"
-                    id="parent_id"
-                    name="parent_id"
-                ) 
-                    option(value="" selected disabled=true) -- Chon danh muc cha --
-                    if(records) 
-                        +select-tree(records, product.parent_id)
+                div(class="form-group")
+                    label(for="parent_id") Danh mục cha
+                    select(
+                        type="text"
+                        class="form-control"
+                        id="parent_id"
+                        name="parent_id"
+                    ) 
+                        option(value="" selected disabled=true) -- Chon danh muc cha --
+                        if(records) 
+                            +select-tree(records, product.parent_id)
 
-            div(class="form-group")
-                label(for="description") Mô tả
-                textarea(
-                    class="form-control textarea-mce"
-                    id="description"
-                    name="description"
-                    rows="5"
-                    required
-                ) #{product.description}
+                div(class="form-group")
+                    label(for="description") Mô tả
+                    textarea(
+                        class="form-control textarea-mce"
+                        id="description"
+                        name="description"
+                        rows="5"
+                        required
+                    ) #{product.description}
 
-            div(class="form-group" upload-image)
-                label(for="thumbnail") Ảnh
-                input(
-                    type="file"
-                    class="form-control"
-                    id="thumbnail"
-                    name="thumbnail"
-                    accept="image/*"
-                    upload-image-input
-                )
-                img(
-                    id="preview-thumbnail" 
-                    src=product.thumbnail 
-                    upload-image-preview
-                )
+                div(class="form-group" upload-image)
+                    label(for="thumbnail") Ảnh
+                    input(
+                        type="file"
+                        class="form-control"
+                        id="thumbnail"
+                        name="thumbnail"
+                        accept="image/*"
+                        upload-image-input
+                    )
+                    img(
+                        id="preview-thumbnail" 
+                        src=product.thumbnail 
+                        upload-image-preview
+                    )
 
-            div(class="form-group")
-                label(for="position") Vị trí
-                input(
-                    type="number"
-                    class="form-control"
-                    id="position"
-                    name="position"
-                    placeholder="Tự động tăng"
-                    min="0"
-                    value=product.position
-                )  
-        
-            div(class="form-group")
-                input(
-                    type="radio"
-                    id="active"
-                    name="status"
-                    value="active"
-                    checked=(product.status == "active")
-                    required
-                )  
-                label(for="active") Hoạt động
+                div(class="form-group")
+                    label(for="position") Vị trí
+                    input(
+                        type="number"
+                        class="form-control"
+                        id="position"
+                        name="position"
+                        placeholder="Tự động tăng"
+                        min="0"
+                        value=product.position
+                    )  
+            
+                div(class="form-group")
+                    input(
+                        type="radio"
+                        id="active"
+                        name="status"
+                        value="active"
+                        checked=(product.status == "active")
+                        required
+                    )  
+                    label(for="active") Hoạt động
 
-                input(
-                    type="radio"
-                    id="inactive"
-                    name="status"
-                    checked=(product.status == "inactive")
-                    required
-                )  
-                label(for="inactive") Dừng hoạt động
+                    input(
+                        type="radio"
+                        id="inactive"
+                        name="status"
+                        checked=(product.status == "inactive")
+                        required
+                    )  
+                    label(for="inactive") Dừng hoạt động
 
-            div(class="form-group")
+                div(class="form-group")
                 button(
                     type="submit"
                 ).btn.btn-primary Sửa

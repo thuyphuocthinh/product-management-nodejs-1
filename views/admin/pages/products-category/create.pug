@@ -3,89 +3,90 @@ include ../../mixins/select-tree.pug
 
 block main 
     .main 
-        h1 Tạo sản phẩm mới
+        if (role.permissions.includes("product-category_create"))
+            h1 Tạo sản phẩm mới
 
-        form(
-            action=`${prefixAdmin}/products-category/create`
-            method="POST"
-            enctype="multipart/form-data"
-        )
-            div(class="form-group")
-                label(for="title") Tiêu đề
-                input(
-                    type="text"
-                    class="form-control"
-                    id="title"
-                    name="title"
-                    required
-                ) 
+            form(
+                action=`${prefixAdmin}/products-category/create`
+                method="POST"
+                enctype="multipart/form-data"
+            )
+                div(class="form-group")
+                    label(for="title") Tiêu đề
+                    input(
+                        type="text"
+                        class="form-control"
+                        id="title"
+                        name="title"
+                        required
+                    ) 
 
-            div(class="form-group")
-                label(for="parent_id") Danh mục cha
-                select(
-                    class="form-control"
-                    id="parent_id"
-                    name="parent_id"
-                ) 
-                    option(value="" selected disabled=true) -- Chon danh muc cha --
-                    if(records) 
-                        +select-tree(records)
+                div(class="form-group")
+                    label(for="parent_id") Danh mục cha
+                    select(
+                        class="form-control"
+                        id="parent_id"
+                        name="parent_id"
+                    ) 
+                        option(value="" selected disabled=true) -- Chon danh muc cha --
+                        if(records) 
+                            +select-tree(records)
 
-            div(class="form-group")
-                label(for="description") Mô tả
-                textarea(
-                    class="form-control textarea-mce"
-                    id="description"
-                    name="description"
-                    rows="5"
-                    required
-                )              
+                div(class="form-group")
+                    label(for="description") Mô tả
+                    textarea(
+                        class="form-control textarea-mce"
+                        id="description"
+                        name="description"
+                        rows="5"
+                        required
+                    )              
 
-            div(class="form-group" upload-image)
-                label(for="thumbnail") Ảnh
-                input(
-                    type="file"
-                    class="form-control"
-                    id="thumbnail"
-                    name="thumbnail"
-                    accept="image/*"
-                    required
-                    upload-image-input
-                )
-                img(id="preview-thumbnail" upload-image-preview)
+                div(class="form-group" upload-image)
+                    label(for="thumbnail") Ảnh
+                    input(
+                        type="file"
+                        class="form-control"
+                        id="thumbnail"
+                        name="thumbnail"
+                        accept="image/*"
+                        required
+                        upload-image-input
+                    )
+                    img(id="preview-thumbnail" upload-image-preview)
 
-            div(class="form-group")
-                label(for="position") Vị trí
-                input(
-                    type="number"
-                    class="form-control"
-                    id="position"
-                    name="position"
-                    placeholder="Tự động tăng"
-                    min="0"
-                )  
-        
-            div(class="form-group")
-                input(
-                    type="radio"
-                    id="active"
-                    name="status"
-                    value="active"
-                    checked 
-                    required
-                )  
-                label(for="active") Hoạt động
+                div(class="form-group")
+                    label(for="position") Vị trí
+                    input(
+                        type="number"
+                        class="form-control"
+                        id="position"
+                        name="position"
+                        placeholder="Tự động tăng"
+                        min="0"
+                    )  
+            
+                div(class="form-group")
+                    input(
+                        type="radio"
+                        id="active"
+                        name="status"
+                        value="active"
+                        checked 
+                        required
+                    )  
+                    label(for="active") Hoạt động
 
-                input(
-                    type="radio"
-                    id="inactive"
-                    name="status"
-                    value="inactive"
-                    required
-                )  
-                label(for="inactive") Dừng hoạt động
+                    input(
+                        type="radio"
+                        id="inactive"
+                        name="status"
+                        value="inactive"
+                        required
+                    )  
+                    label(for="inactive") Dừng hoạt động
 
-            div(class="form-group")
-                button(
-                    type="submit"
-                ).btn.btn-primary Tạo mới
+                div(class="form-group")
+                    button(
+                        type="submit"
+                    ).btn.btn-primary Tạo mới

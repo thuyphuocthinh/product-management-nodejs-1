@@ -3,33 +3,34 @@ include ../../mixins/select-tree.pug
 
 block main 
     .main 
-        h1 Tạo nhóm quyền mới
+        if (role.permissions.includes("roles_create"))
+            h1 Tạo nhóm quyền mới
 
-        form(
-            action=`${prefixAdmin}/roles/create`
-            method="POST"
-        )
-            div(class="form-group")
-                label(for="title") Tiêu đề
-                input(
-                    type="text"
-                    class="form-control"
-                    id="title"
-                    name="title"
-                    required
-                ) 
+            form(
+                action=`${prefixAdmin}/roles/create`
+                method="POST"
+            )
+                div(class="form-group")
+                    label(for="title") Tiêu đề
+                    input(
+                        type="text"
+                        class="form-control"
+                        id="title"
+                        name="title"
+                        required
+                    ) 
 
-            div(class="form-group")
-                label(for="description") Mô tả
-                input(
-                    type="text"
-                    class="form-control"
-                    id="description"
-                    name="description"
-                    required
-                )  
+                div(class="form-group")
+                    label(for="description") Mô tả
+                    input(
+                        type="text"
+                        class="form-control"
+                        id="description"
+                        name="description"
+                        required
+                    )  
 
-            div(class="form-group")
-                button(
-                    type="submit"
-                ).btn.btn-primary Tạo mới
+                div(class="form-group")
+                    button(
+                        type="submit"
+                    ).btn.btn-primary Tạo mới

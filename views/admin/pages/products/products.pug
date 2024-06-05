@@ -5,123 +5,144 @@ include ../../mixins/pagination.pug
 include ../../mixins/formChangeMulti.pug
 include ../../mixins/alert.pug
 include ../../mixins/sort.pug
+include ../../mixins/moment.pug
 
 block main 
     .main
-        h1 Trang sản phẩm
+        if (role.permissions.includes("product_view"))
+            h1 Trang sản phẩm
 
-        +alertSuccess("5000")
-       
-        .card.mb-3 
-            .card-header Bộ lọc và Tìm kiếm 
-            .card-body 
-                .row 
-                    .col-6
-                        +filterStatus(filterStatus)
-                    .col-6 
-                        +formSearch(keyword)                        
+            +alertSuccess("5000")
+        
+            .card.mb-3 
+                .card-header Bộ lọc và Tìm kiếm 
+                .card-body 
+                    .row 
+                        .col-6
+                            +filterStatus(filterStatus)
+                        .col-6 
+                            +formSearch(keyword)                        
 
-        .card.mb-3 
-            +sort()
+            .card.mb-3 
+                +sort()
 
-        .card.mb-3
-            .card-header Danh sách sản phẩm 
-            .card-body
-                .row
-                    .col-8
-                        +formChangeMulti(`${prefixAdmin}/products/change-multi?_method=PATCH`)
-                    .col-4
-                        a(
-                            href=`${prefixAdmin}/products/create`
-                            class="btn btn-outline-success"
-                        ) + Thêm mới
-                table(
-                    class="table table-hover table-sm align-middle"
-                    checkbox-multi
-                ) 
-                    thead 
-                        tr 
-                            th 
-                                input(
-                                    type="checkbox"
-                                    name="checkall"
-                                )
-                            th STT
-                            th Hình ảnh
-                            th Tiêu đề
-                            th Giá
-                            th Vị trí
-                            th Trạng thái
-                            th Hành động 
-
-                    tbody 
-                        if (products.length === 0)
+            .card.mb-3
+                .card-header Danh sách sản phẩm 
+                .card-body
+                    .row
+                        if (role.permissions.includes("product_edit"))
+                            .col-8
+                                +formChangeMulti(`${prefixAdmin}/products/change-multi?_method=PATCH`)
+                        if (role.permissions.includes("product_create"))
+                            .col-4
+                                a(
+                                    href=`${prefixAdmin}/products/create`
+                                    class="btn btn-outline-success"
+                                ) + Thêm mới
+                    table(
+                        class="table table-hover table-sm align-middle"
+                        checkbox-multi
+                    ) 
+                        thead 
                             tr 
-                                td(colspan="6") Không tìm thấy sản phẩm 
-                        else 
-                            -for(let i = 0; i < products.length; i++)
+                                th 
+                                    input(
+                                        type="checkbox"
+                                        name="checkall"
+                                    )
+                                th STT
+                                th Hình ảnh
+                                th Tiêu đề
+                                th Giá
+                                th Vị trí
+                                th Trạng thái
+                                th Người tạo
+                                th Hành động 
+
+                        tbody 
+                            if (products.length === 0)
                                 tr 
-                                    td
-                                        input(
-                                            type="checkbox"
-                                            name="id"
-                                            value=products[i].id
-                                        )
-                                    td #{pagination.limitItems * (pagination.currentPage - 1) + (i + 1)}
-                                    td 
-                                        img(
-                                            src=products[i].thumbnail
-                                            height="auto"
-                                            alt="Sản phẩm"
-                                        ).productImg
-                                    td= products[i].title
-                                    td $#{products[i].price} 
-                                    td
-                                        input(
-                                            type="number"
-                                            min="1"
-                                            value=products[i].position 
-                                            style="width: 50px"
-                                            name="position"
-                                        )
-                                    if (products[i].status === "active")
-                                        td 
-                                            a(
-                                                href="javascript:;"
-                                                data-status="active"
-                                                data-id=products[i].id
-                                                button-change-status
-                                            ).activeStatus= products[i].status
-                                    else    
+                                    td(colspan="6") Không tìm thấy sản phẩm 
+                            else 
+                                -for(let i = 0; i < products.length; i++)
+                                    tr 
                                         td
+                                            input(
+                                                type="checkbox"
+                                                name="id"
+                                                value=products[i].id
+                                            )
+                                        td #{pagination.limitItems * (pagination.currentPage - 1) + (i + 1)}
+                                        td 
+                                            img(
+                                                src=products[i].thumbnail
+                                                height="auto"
+                                                alt="Sản phẩm"
+                                            ).productImg
+                                        td= products[i].title
+                                        td $#{products[i].price} 
+                                        td
+                                            input(
+                                                type="number"
+                                                min="1"
+                                                value=products[i].position 
+                                                style="width: 50px"
+                                                name="position"
+                                            )
+                                        if (role.permissions.includes("product_edit"))
+                                            if (products[i].status === "active")
+                                                td 
+                                                    a(
+                                                        href="javascript:;"
+                                                        data-status="active"
+                                                        data-id=products[i].id
+                                                        button-change-status
+                                                    ).activeStatus= products[i].status
+                                            else    
+                                                td
+                                                    a(
+                                                        href="javascript:;" 
+                                                        data-status="inactive"
+                                                        data-id=products[i].id
+                                                        button-change-status
+                                                    ).inactiveStatus= products[i].status
+                                        else 
+                                            if (products[i].status === "active")
+                                                td 
+                                                    span(
+                                                    ).activeStatus= products[i].status
+                                            else    
+                                                td
+                                                    span(
+                                                    ).inactiveStatus= products[i].status
+                                        td 
+                                            p #{products[i].createdBy.fullName}
+                                            if (products[i].createdBy.account_id)
+                                                +formatDateTime(products[i].createdBy.created_at)
+                                        td 
+                                            if (role.permissions.includes("product_edit"))
+                                                a(
+                                                    href=`${prefixAdmin}/products/edit/${products[i].id}`
+                                                ).btn.btn-primary.me-2 Sửa
                                             a(
-                                                href="javascript:;" 
-                                                data-status="inactive"
-                                                data-id=products[i].id
-                                                button-change-status
-                                            ).inactiveStatus= products[i].status
-                                    td 
-                                        a(
-                                            href=`${prefixAdmin}/products/edit/${products[i].id}`
-                                        ).btn.btn-primary.me-2 Sửa
-                                        a(
-                                            href=`${prefixAdmin}/products/detail/${products[i].id}`
-                                        ).btn.btn-success.me-2 Chi tiết
-                                        button(data-id=products[i].id btn-delete).btn.btn-danger Xóa
+                                                href=`${prefixAdmin}/products/detail/${products[i].id}`
+                                            ).btn.btn-success.me-2 Chi tiết
+                                            if (role.permissions.includes("product_delete"))
+                                                button(data-id=products[i].id btn-delete).btn.btn-danger Xóa
 
-        +pagination(pagination)
+            +pagination(pagination)
 
-        form(
-            action=""
-            method="POST"
-            id="form-change-status"
-            data-path=`${prefixAdmin}/products/change-status`
-        )
+            form(
+                action=""
+                method="POST"
+                id="form-change-status"
+                data-path=`${prefixAdmin}/products/change-status`
+            )
 
-        form(
-            action=""
-            method="POST"
-            id="form-delete-item"
-            data-path=`${prefixAdmin}/products/delete/id`    
-        ) 
+            form(
+                action=""
+                method="POST"
+                id="form-delete-item"
+                data-path=`${prefixAdmin}/products/delete/id`    
+            ) 
 

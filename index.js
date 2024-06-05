@@ -9,6 +9,7 @@ const { prefixAdmin } = require("./config/system");
 const methodOverride = require("method-override");
 const bodyParser = require("body-parser");
 const flash = require("express-flash");
+const moment = require("moment");
 require("dotenv").config();
 
 const app = express();
@@ -38,6 +39,7 @@ app.set("view engine", "pug");
 
 // App local variables
 app.locals.prefixAdmin = prefixAdmin;
+app.locals.moment = moment;
 
 // TinyMCE
 app.use(

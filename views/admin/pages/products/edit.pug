@@ -4,16 +4,17 @@ include ../../mixins/select-tree.pug
 
 block main 
     .main
-        h1.mb-4 Edit sản phẩm
+        if (role.permissions.includes("product_edit"))
+            h1.mb-4 Edit sản phẩm
 
-        +alertSuccess("5000")
+            +alertSuccess("5000")
 
-        form(
-            action=`${prefixAdmin}/products/edit/${product.id}?_method=PATCH`
-            method="POST"
-            id="form-edit-product"
-            enctype="multipart/form-data"
-        )
+            form(
+                action=`${prefixAdmin}/products/edit/${product.id}?_method=PATCH`
+                method="POST"
+                id="form-edit-product"
+                enctype="multipart/form-data"
+            )
             div(class="form-group")
                 label(for="title") Tiêu đề
                 input(

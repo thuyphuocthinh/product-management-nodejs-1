@@ -1,7 +1,6 @@
 mixin table-tree(items, level = 1)
     each item in items 
         - const prefix = Array(level + 1).join("-- ")
-        
         tr 
             td
                 input(
@@ -25,30 +24,47 @@ mixin table-tree(items, level = 1)
                     style="width: 50px"
                     name="position"
                 )
-            if (item.status === "active")
-                td 
-                    a(
-                        href="javascript:;"
-                        data-status="active"
-                        data-id=item.id
-                        button-change-status
-                    ).activeStatus=item.status
+            if (role.permissions.includes("product-category_edit"))
+                if (item.status === "active")
+                    td 
+                        a(
+                            href="javascript:;"
+                            data-status="active"
+                            data-id=item.id
+                            button-change-status
+                        ).activeStatus=item.status
+                else    
+                    td
+                        a(
+                            href="javascript:;" 
+                            data-status="inactive"
+                            data-id=item.id
+                            button-change-status
+                        ).inactiveStatus=item.status
             else    
-                td
-                    a(
-                        href="javascript:;" 
-                        data-status="inactive"
-                        data-id=item.id
-                        button-change-status
-                    ).inactiveStatus=item.status
+                if (item.status === "active")
+                    td 
+                        span(
+                        ).activeStatus=item.status
+                else    
+                    td
+                        span(
+                        ).inactiveStatus=item.status
             td 
+                if (role.permissions.includes("product-category_edit"))
+                    a(
+                        href=`${prefixAdmin}/products-category/edit/${item.id}`
+                    ).btn.btn-primary.me-2 Sửa
+
                 a(
-                    href=`${prefixAdmin}/products-category/edit/${item.id}`
-                ).btn.btn-primary.me-2 Sửa
-                a(
-                    href=`${prefixAdmin}/products-category/detail/${item.id}`
+                    href=`${prefixAdmin}/products-category/delete/${item.id}`
                 ).btn.btn-success.me-2 Chi tiết
-                button(data-id=item.id btn-delete).btn.btn-dange  
+
+                if (role.permissions.includes("product-category_delete"))
+                    button(
+                        button-delete
+                    ).btn.btn-danger.me-2 Xóa
+                    button(data-id=item.id btn-delete).btn.btn-dange  
         
         if item.children && item.children.length > 0
             +table-tree(item.children, level + 1)
