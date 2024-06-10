@@ -1,0 +1,8 @@
+mixin sub-menu(layoutProductsCategories, pathProduct, level = 1)
+    ul
+        each item in layoutProductsCategories
+            li
+                - const prefix = Array(level + 1).join("-- ")
+                a(href=`${pathProduct}/${item.slug}`) #{prefix} #{item.title}
+                if (item.children && item.children.length > 0)
+                    +sub-menu(item.children, pathProduct, level + 1) 

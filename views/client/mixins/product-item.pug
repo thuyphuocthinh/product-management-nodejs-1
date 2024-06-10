@@ -1,0 +1,18 @@
+mixin product-item(item)
+    .col-12.col-lg-4.mb-3 
+        .product-item(style="height: 100%;") 
+            .inner-image(style="position: relative;") 
+                img(src=item.thumbnail, alt=item.title, style="height: 200px;")
+                if (item.featured === "featured1")
+                    span(
+                        style="position: absolute; top: 0; right: 0; background-color: green;"
+                        class="badge"
+                    ) Nổi bật
+            .inner-content 
+                a(
+                    href=`/products/${item.slug}`
+                ) 
+                    h3.inner-title #{item.title}
+                .inner-price-old #{item.price}
+                .inner-price-new #{item.newPrice}
+                .inner-discount #{item.discountPercentage}

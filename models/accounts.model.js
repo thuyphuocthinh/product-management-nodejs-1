@@ -16,6 +16,7 @@ const accountsScheme = new mongoose.Schema(
     avatar: String,
     role_id: String,
     status: String,
+    position: Number,
     deleted: {
       type: Boolean,
       default: false,

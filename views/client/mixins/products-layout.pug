@@ -1,0 +1,6 @@
+include ./product-item.pug
+
+mixin products-grid(products)
+    .row 
+        -for(let i = 0; i < products.length; i++)
+            +product-item(products[i])        

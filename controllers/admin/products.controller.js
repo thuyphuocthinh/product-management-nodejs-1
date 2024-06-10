@@ -53,9 +53,18 @@ module.exports.index = async (req, res) => {
       .skip(objectPagination.skip);
 
     for (const product of products) {
+      // get creator
       let user = await Accounts.findOne({ _id: product.createdBy.account_id });
       if (user) {
         product.createdBy.fullName = user.fullName;
+      }
+      // get latest updator
+      let updatedBy = product.updatedBy.slice(-1)[0];
+      if (updatedBy) {
+        const updator = await Accounts.findOne({ _id: updatedBy.account_id });
+        if (updator) {
+          product.updatedBy.fullName = updator.fullName;
+        }
       }
     }
 
@@ -75,18 +84,39 @@ module.exports.index = async (req, res) => {
 module.exports.changeStatus = async (req, res) => {
   const status = req.params.status;
   const id = req.params.id;
-  await Product.updateOne({ _id: id }, { status: status });
-  req.flash("success", "Updated status successfully");
-  res.redirect("back");
+  try {
+    const updatedBy = {
+      account_id: res.locals.user.id,
+      updated_at: new Date(),
+    };
+    await Product.updateOne(
+      { _id: id },
+      {
+        status: status,
+        $push: { updatedBy: updatedBy },
+      }
+    );
+    req.flash("success", "Updated status successfully");
+    res.redirect("back");
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 // [PATCH] /admin/products/change-multi
 module.exports.changeMultiStatus = async (req, res) => {
   const type = req.body.type;
   const ids = req.body.ids.split(",");
+  const updatedBy = {
+    account_id: res.locals.user.id,
+    updated_at: new Date(),
+  };
   switch (type) {
     case "active": {
-      await Product.updateMany({ _id: { $in: ids } }, { status: "active" });
+      await Product.updateMany(
+        { _id: { $in: ids } },
+        { status: "active", $push: { updatedBy: updatedBy } }
+      );
       req.flash(
         "success",
         `Updated  status successfully of ${ids.length} products`
@@ -94,7 +124,10 @@ module.exports.changeMultiStatus = async (req, res) => {
       break;
     }
     case "inactive": {
-      await Product.updateMany({ _id: { $in: ids } }, { status: "inactive" });
+      await Product.updateMany(
+        { _id: { $in: ids } },
+        { status: "inactive", $push: { updatedBy: updatedBy } }
+      );
       req.flash(
         "success",
         `Updated  status successfully of ${ids.length} products`
@@ -120,7 +153,10 @@ module.exports.changeMultiStatus = async (req, res) => {
         const itemArr = item.split("-");
         let [id, position] = itemArr;
         position = parseInt(position);
-        await Product.updateOne({ _id: id }, { position: position });
+        await Product.updateOne(
+          { _id: id },
+          { position: position, $push: { updatedBy: updatedBy } }
+        );
       }
       req.flash("success", `Change positions successfully`);
       break;
@@ -223,7 +259,18 @@ module.exports.editItemPatch = async (req, res) => {
     req.body.thumbnail = `/uploads/${req.file.filename}`;
   }
   try {
-    await Product.updateOne({ _id: req.params.id }, req.body);
+    const updatedBy = {
+      account_id: res.locals.user.id,
+      updated_at: new Date(),
+    };
+
+    await Product.updateOne(
+      { _id: req.params.id },
+      {
+        ...req.body,
+        $push: { updatedBy: updatedBy },
+      }
+    );
     req.flash("success", "Updated product successfully");
   } catch (error) {
     req.flash("error", "Updated product failed");

@@ -38,6 +38,27 @@ block main
                             +select-tree(categories)
 
                 div(class="form-group")
+                    p Nổi bật 
+                    input(
+                        type="radio"
+                        id="featured1"
+                        name="featured"
+                        value="featured1" 
+                        required
+                    )  
+                    label(for="featured1") Có
+
+                    input(
+                        type="radio"
+                        id="featured0"
+                        name="featured"
+                        value="featured0"
+                        required
+                        checked
+                    )  
+                    label(for="featured0") Không
+
+                div(class="form-group")
                     label(for="description") Mô tả
                     textarea(
                         class="form-control textarea-mce"

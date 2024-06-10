@@ -42,6 +42,11 @@ const getProductsCategoryCreate = async (req, res) => {
 // [POST] /admin/products-category/create
 const createProductCategory = async (req, res) => {
   try {
+    const permissions = res.locals.role.permissions;
+    if (!permissions.includes("product-category_create")) {
+      res.send("403");
+      return;
+    }
     if (req.body.position === "") {
       const count = await ProductCategory.countDocuments();
       req.body.position = count + 1;

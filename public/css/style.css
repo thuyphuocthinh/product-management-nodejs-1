@@ -70,6 +70,29 @@ img {
     border-radius: 5px;
 }
 
+.sub-menu ul {
+    display: none;
+    background-color: rgb(208, 208, 208);
+    width: 100%;
+}
+
+.sub-menu ul li a {
+    display: block;
+    padding: 1rem;
+    width: fit-content;
+}
+
+.sub-menu, .sub-menu li {
+    position: relative;
+}
+
+li:hover > ul {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 100%;
+} 
+
 /* footer */
 .footer {
     background-color: black;

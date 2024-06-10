@@ -57,6 +57,7 @@ block main
                                 th Vị trí
                                 th Trạng thái
                                 th Người tạo
+                                th Người cập nhật
                                 th Hành động 
 
                         tbody 
@@ -119,6 +120,12 @@ block main
                                             p #{products[i].createdBy.fullName}
                                             if (products[i].createdBy.account_id)
                                                 +formatDateTime(products[i].createdBy.created_at)
+                                        
+                                        td 
+                                            p #{products[i].updatedBy.fullName}
+                                            if (products[i].updatedBy.account_id)
+                                                +formatDateTime(products[i].updatedBy.updated_at)
+                                        
                                         td 
                                             if (role.permissions.includes("product_edit"))
                                                 a(

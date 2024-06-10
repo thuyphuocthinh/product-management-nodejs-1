@@ -1,3 +1,5 @@
+include ../mixins/sub-menu.pug
+
 header.header.py-4 
     .container 
         .row.align-items-center 
@@ -11,5 +13,7 @@ header.header.py-4
                     ul(class="d-flex justify-content-center gap-4 align-items-center") 
                         li 
                             a(href="/") Trang chủ
-                        li 
-                            a(href="/products") Sản phẩm   
+                        li(class="sub-menu")
+                            -const pathProduct = "/products";
+                            a(href="/products") Danh mục Sản phẩm   
+                            +sub-menu(layoutProductsCategories, pathProduct)
