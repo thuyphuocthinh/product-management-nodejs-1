@@ -1,0 +1,44 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main 
+    .container.my-3 
+        .row.justify-content-center 
+            h1(class="text-center") #{pageTitle}
+
+            form(
+                action="/user/register"
+                method="POST"
+            )
+                div(class="form-group")
+                    label(for="fullName") Họ tên *
+                    input(
+                        type="text"
+                        class="form-control mt-2"
+                        id="fullName"
+                        name="fullName"
+                        required
+                    )
+
+                div(class="form-group")
+                    label(for="email") Email *
+                    input(
+                        type="text"
+                        class="form-control mt-2"
+                        id="email"
+                        name="email"
+                        required
+                    )    
+
+                div(class="form-group")
+                    label(for="password") Mật khẩu *
+                    input(
+                        type="password"
+                        class="form-control mt-2"
+                        id="password"
+                        name="password"
+                        required
+                    )  
+
+                div(class="form-group")
+                    button(class="btn btn-primary mt-2" style="width: 100%;") Đăng ký

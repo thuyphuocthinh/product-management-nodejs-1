@@ -1,0 +1,59 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main
+    .container.my-3 
+        .row 
+            .col-12 
+                +box-head(pageTitle)
+
+        .row 
+            .col-12 
+                div(class="alert alert-success")
+                    p !Chúc mừng bạn đã đặt hàng thành công! Chúng tôi sẽ xử lí đơn hàng trong thời gian sớm nhất 
+        if (order) 
+            .row 
+                .col-12 
+                    h4(class="mb-2") Thông tin cá nhân 
+                    table(class="table table-bordered")
+                        tbody 
+                            tr 
+                                td Họ tên
+                                td 
+                                    b #{order.userInfo.fullName}
+                            tr 
+                                td Số điện thoại
+                                td 
+                                    b #{order.userInfo.phone}
+                            tr 
+                                td Địa chỉ
+                                td 
+                                    b #{order.userInfo.address}
+
+            .row 
+                .col-12 
+                    table(class="table table-bordered")
+                        thead 
+                            tr 
+                                th STT 
+                                th Ảnh 
+                                th Tên 
+                                th Giá
+                                th Số lượng 
+                                th Tổng tiền 
+                        tbody 
+                            each item, index in order.products
+                                tr 
+                                    td #{index + 1}
+                                    td.fw-bold #{item.title}
+                                    td 
+                                        #{item.newPrice}
+                                    td #{item.quantity}
+                                    td 
+                                        #{item.totalPrice}
+                        
+                .col-12 
+                    div.d-flex.flex-column.align-items-end
+                        h3(class="text-right mt-3") Tổng đơn hàng #{order.totalPrice}
+
+    script(src="/js/client/cart.js" type="application/javascript") 

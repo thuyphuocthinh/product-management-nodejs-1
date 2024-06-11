@@ -5,6 +5,6 @@ const router = express.Router();
 // get(path, callback)
 router.get("/", controller.index);
 router.get("/:slugCategory", controller.category);
-// router.get("/:slug", controller.detail);
+router.get("/detail/:slugProduct", controller.detail);
 
 module.exports = router;

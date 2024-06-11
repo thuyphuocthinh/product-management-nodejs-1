@@ -3,43 +3,75 @@ include ../../mixins/box-head.pug
 
 block main 
     .container.my-3 
+        button(
+            class='btn btn-secondary mb-3'
+            btn-goBack
+        ) Trở lại
         .row 
             .col-12
-                if (product.title)
-                    h1(class="mb-4") #{product.title}
-        
-                if (product.price)
-                    div(class="mb-4")
-                        <b> Giá: </b> #{product.price}
-                
-                if (product.title)
-                    div(class="mb-4") 
-                        <b> GIảm giá: </b> #{product.discountPercentage}%
+                .row 
+                    .col-6 
+                        if (product.thumbnail)
+                            div(class="mb-4" style="height: 100%;")
+                                img(
+                                    src=product.thumbnail 
+                                    style="width: 100%; height: 100%;"
+                                )
+                    .col-6  
+                        if (product.title)
+                            h3(class="mb-4") #{product.title}
+             
+                            if (product.category)
+                                p(class="mb-4") 
+                                    <b> Danh mục </b> #{product.category.title}
+                    
+                            if (product.price)
+                                div(class="mb-4")
+                                    <b> Giá cũ: </b> #{product.price}
 
-                if (product.stock)
-                    div(class="mb-4")
-                        <b> Còn lại: </b>  #{product.stock}
+                            if (product.price)
+                                div(class="mb-4")
+                                    <b> Giá mới: </b> #{product.newPrice}
+                            
+                            if (product.title)
+                                div(class="mb-4") 
+                                    <b> Giảm giá: </b> #{product.discountPercentage}%
 
-                if (product.thumbnail)
-                    div(class="mb-4")
-                        <b> Ảnh </b>
-                        img(
-                            src=product.thumbnail 
-                            style="width: 100px"
-                        )
+                            if (product.stock)
+                                div(class="mb-4")
+                                    <b> Còn lại: </b>  #{product.stock}
 
-                if (product.status)
-                    div(class="mb-4")
-                        <b> Trạng thái: </b>
-                        if (product.status === "active")
-                            span Hoạt động 
-                        else 
-                            span Không hoạt động
-                
-                if (product.position)
-                    div(class="mb-4")
-                        <b> Vị trí: </b> #{product.position}
+                            if (product.status)
+                                div(class="mb-4")
+                                    <b> Trạng thái: </b>
+                                    if (product.status === "active")
+                                        span Hoạt động 
+                                    else 
+                                        span Không hoạt động
+                            
+                            if (product.position)
+                                div(class="mb-4")
+                                    <b> Vị trí: </b> #{product.position}
 
-                if (product.description)
-                    div(class="mb-4")
-                        <b> Mô tả: </b> #{product.description}
+                            form(
+                                action=`/cart/add/${product.id}`
+                                method="POST"
+                            )
+                                input(
+                                    class="form-control mb-2"
+                                    type="number"
+                                    name="quantity"
+                                    value="1"
+                                    min="1"
+                                    max=product.stock
+                                ) 
+
+                                button(
+                                    type="submit"
+                                    class="btn btn-success"
+                                    style="width: 100%;"
+                                ) Add to cart                
+
+            if (product.description)
+                div(class="mt-4")
+                    <h3> Mô tả: </h3> !{product.description}

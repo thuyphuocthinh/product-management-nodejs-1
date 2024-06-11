@@ -7,8 +7,21 @@ header.header.py-4
                 .inner-logo 
                     a(href="/")
                         img(src="/images/logo.svg", alt="Logo")
-
-            .col-9 
+            .col-5
+                form(
+                    action="/search" 
+                    method="GET"
+                ) 
+                    div(class="form-group d-flex mb-0")
+                        input(
+                            type="text" 
+                            name="keyword" 
+                            class="form-control"
+                            placeholder="Nhập từ khóa..."
+                            value=keyword
+                        )
+                        button(type="submit" class="btn btn-primary") Tìm 
+            .col-4 
                 .inner-menu 
                     ul(class="d-flex justify-content-center gap-4 align-items-center") 
                         li 
@@ -17,3 +30,30 @@ header.header.py-4
                             -const pathProduct = "/products";
                             a(href="/products") Danh mục Sản phẩm   
                             +sub-menu(layoutProductsCategories, pathProduct)
+                        li 
+                            a(
+                                href="/cart"
+                                class="btn btn-success"
+                            ) Giỏ hàng (#{miniCart ? miniCart.totalQuantity : "0"})
+
+                        if (user)
+                            li 
+                                a(
+                                    href="/user/info"
+                                ) #{user.fullName}
+
+                            li 
+                                a(
+                                    href="/user/logout"
+                                ) Đăng xuất
+
+                        else 
+                            li 
+                                a(
+                                    href="/user/register"
+                                ) Đăng ký
+                            li 
+                                a(
+                                    href="/user/login"
+                                ) Đăng nhập
+                            

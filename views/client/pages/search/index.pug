@@ -1,0 +1,13 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+include ../../mixins/products-layout.pug
+
+block main 
+    .container.my-3 
+        .row 
+            +box-head(pageTitle)
+
+        if (products.length > 0)
+            +products-grid(products)  
+        else 
+            p.text-danger Không tìm thấy sản phẩm nào

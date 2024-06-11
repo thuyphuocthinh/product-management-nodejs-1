@@ -1,0 +1,11 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main 
+    .container.my-3 
+        .row
+            +box-head("Thông tin tài khoản")
+
+        p #{user.fullName}
+        p #{user.email}
+        p #{user.phone}
