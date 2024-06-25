@@ -3,10 +3,6 @@ include ../mixins/sub-menu.pug
 header.header.py-4 
     .container 
         .row.align-items-center 
-            .col-3 
-                .inner-logo 
-                    a(href="/")
-                        img(src="/images/logo.svg", alt="Logo")
             .col-5
                 form(
                     action="/search" 
@@ -21,9 +17,9 @@ header.header.py-4
                             value=keyword
                         )
                         button(type="submit" class="btn btn-primary") Tìm 
-            .col-4 
+            .col-7
                 .inner-menu 
-                    ul(class="d-flex justify-content-center gap-4 align-items-center") 
+                    ul(class="d-flex flex-md-row flex-column justify-content-center gap-4 align-items-center") 
                         li 
                             a(href="/") Trang chủ
                         li(class="sub-menu")
@@ -37,6 +33,12 @@ header.header.py-4
                             ) Giỏ hàng (#{miniCart ? miniCart.totalQuantity : "0"})
 
                         if (user)
+                            li
+                                a(href="/users/friends") Bạn bè 
+                            
+                            li
+                                a(href="/rooms-chat") Phòng chat 
+                            
                             li 
                                 a(
                                     href="/user/info"

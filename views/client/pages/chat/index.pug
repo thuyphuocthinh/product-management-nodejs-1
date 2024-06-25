@@ -1,0 +1,67 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main
+    .container.my-3 
+        .row 
+            .col-12 
+                +box-head(pageTitle)
+
+        include ../../partials/list-btn-user.pug 
+
+        .row 
+            .col-12 
+                div.chat
+                    div.chat-box(my-id=user.id)
+                        each chat in chats 
+                            div(
+                                class="message-block "+(chat.infoUser.id === user.id ? "outgoing" : "")
+                            )
+                                if (chat.infoUser.id !== user.id)
+                                    p.fw-bold.sender-name #{chat.infoUser.fullName} 
+                                if(chat.content)
+                                    p(
+                                        class="message "+(chat.infoUser.id === user.id ? "message-outgoing" : "message-incoming")
+                                    ) #{chat.content}
+                                if(chat.images)
+                                    each image in chat.images  
+                                        img(src=image style="width: 100px;")
+
+                        div(class="inner-typing")
+                        div(
+                            class="custom-file-container" 
+                            data-upload-id="upload-image-chat"
+                        )      
+                            
+                    .chat-input 
+                        form(
+                            action=""
+                            class="d-flex form-chat"
+                        )
+                            input(
+                                type="text" 
+                                name="content" 
+                                class="form-control input-chat"
+                                placeholder="Type message here..."
+                            ) 
+                            
+                            button(
+                                type="button"
+                                class="btn btn-primary icon-btn"
+                            ) Icon
+                            
+                            label(
+                                for="file-upload-with-preview-upload-image-chat"
+                                class="btn btn-primary icon-btn"
+                            ) Image
+                            
+                            button(
+                                type="submit" 
+                                class="btn btn-success"
+                            ) Send 
+        
+                    emoji-picker.chat-icon.hide
+            
+
+                            
+            

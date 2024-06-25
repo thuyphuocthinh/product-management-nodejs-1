@@ -5,6 +5,7 @@ module.exports.generateRandomString = (length) => {
   for (let i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * characters.length));
   }
+  console.log(result);
   return result;
 };
 

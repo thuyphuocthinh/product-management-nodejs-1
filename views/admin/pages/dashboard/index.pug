@@ -3,3 +3,49 @@ extend ../../layouts/default.pug
 block main 
     .main
         h1 Trang tổng quan
+    
+        .row 
+            .col-12 
+                .card
+                    .card-header Thông tin tài khoản 
+                    .card-body 
+                        if(user.fullName)
+                            p Họ tên: <b> #{user.fullName} </b>
+
+                        if(user.fullName)
+                            p Email: <b> #{user.email} </b>
+                        
+                        if(user.fullName)
+                            p Số điện thoại: <b> #{user.phone} </b>
+                        
+                        if(role.title)
+                            p Phân quyền: <b> #{role.title} </b>
+        .row 
+            .col-6 
+                .card
+                    .card-header Danh mục sản phẩm
+                    .card-body 
+                        p Số lượng: <b> #{statistic.categoryProduct.total} </b>
+                        p Hoạt động: <b> #{statistic.categoryProduct.active} </b>
+                        p Dừng hoạt động: <b> #{statistic.categoryProduct.inactive} </b>
+            .col-6 
+                .card
+                    .card-header Sản phẩm
+                    .card-body 
+                        p Số lượng: <b> #{statistic.product.total} </b>
+                        p Hoạt động: <b> #{statistic.product.active} </b>
+                        p Dừng hoạt động: <b> #{statistic.product.inactive} </b>
+            .col-6 
+                .card
+                    .card-header Tài khoản admin
+                    .card-body 
+                        p Số lượng: <b> #{statistic.account.total} </b>
+                        p Hoạt động: <b> #{statistic.account.active} </b>
+                        p Dừng hoạt động: <b> #{statistic.account.inactive} </b>
+            .col-6 
+                .card
+                    .card-header Tài khoản client
+                    .card-body 
+                        p Số lượng: <b> #{statistic.user.total} </b>
+                        p Hoạt động: <b> #{statistic.user.active} </b>
+                        p Dừng hoạt động: <b> #{statistic.user.inactive} </b>

@@ -1,0 +1,22 @@
+.row.my-3 
+    .col-12 
+        a(
+            class="btn btn-primary me-2 d-inline-block mb-3"
+            href="/users/not-friend"
+        ) Danh sách người dùng
+        a(
+            class="btn btn-primary me-2 d-inline-block mb-3"
+            href="/users/friends"
+        ) Danh sách bạn bè
+        a(
+            class="btn btn-primary me-2 d-inline-block mb-3"
+            href="/users/request"
+        ) Lời mời đã gửi
+        a(
+            class="btn btn-primary me-2 d-inline-block mb-3"
+            href="/users/accept"
+        ) 
+            span.me-2 Lời mời kết bạn
+            span(
+                badge-users-accept=user.id
+            ) #{user.acceptFriends.length}

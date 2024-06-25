@@ -10,6 +10,8 @@ const methodOverride = require("method-override");
 const bodyParser = require("body-parser");
 const flash = require("express-flash");
 const moment = require("moment");
+const { Server } = require("socket.io");
+const http = require("http");
 require("dotenv").config();
 
 const app = express();
@@ -17,6 +19,13 @@ const app = express();
 app.use(cookieParser("THUYPHUOCTHINH"));
 app.use(session({ cookie: { maxAge: 60000 } }));
 app.use(flash());
+
+// socket
+const server = http.createServer(app);
+const io = new Server(server);
+global._io = io;
+
+
 
 // method-override
 app.use(methodOverride("_method"));
@@ -50,7 +59,12 @@ app.use(
 // Routes
 clientRoute(app);
 adminRoute(app);
+app.get("*", (req, res) => {
+  res.render("client/pages/errors/404", {
+    pageTitle: "404 Not Found",
+  });
+});
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`App listening at port ${port}`);
 });

@@ -1,0 +1,27 @@
+extends ../../layouts/default.pug 
+include ../../mixins/box-head.pug 
+
+block main 
+    .container.my-3 
+        .row 
+            include ../../partials/list-btn-user.pug 
+        .row
+            +box-head(pageTitle)
+
+        .row 
+            each user in users
+                .col-md-6.col-12.mb-4.mb-md-0 
+                    .d-flex.gap-3.justify-content-center.py-2.align-items-center.shadow-sm.bg-white.rounded
+                        div 
+                            img(
+                                src=(user.avatar || "https://picsum.photos/50/50")
+                                alt=user.fullName
+                                style="border-radius: 50%;"
+                            )
+
+                        div.friend-btns 
+                            p.fw-bold #{user.fullName}
+                            button(
+                                class="btn btn-secondary"
+                                btn-cancel-friend=user.id
+                            ) Huy

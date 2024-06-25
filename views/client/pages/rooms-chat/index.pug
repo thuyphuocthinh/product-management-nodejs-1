@@ -1,0 +1,37 @@
+extends ../../layouts/default.pug 
+include ../../mixins/box-head.pug 
+
+block main 
+    .container.my-3 
+        .row
+            +box-head(pageTitle)
+
+        .row.my-4 
+            .col-6
+                a(
+                    href="/rooms-chat/create"
+                    class="btn btn-success"
+                ) Tạo phòng chat 
+
+        
+        .row
+            if (roomChatList.length > 0)
+                each room in roomChatList
+                    .col-md-6.col-12.mb-4.mb-md-0
+                        .d-flex.gap-3.justify-content-center.py-2.align-items-center.shadow-sm.bg-white.rounded
+                            div(
+                                style="position: relative;"
+                            ) 
+                                img(
+                                    src=(user.avatar || "https://picsum.photos/50/50")
+                                    alt=user.fullName
+                                    style="border-radius: 50%;"
+                                )
+                            div
+                                p.fw-bold #{room.title}
+                                a(
+                                    href=`/chat/${room.id}`
+                                    class="btn btn-primary"
+                                ) Nhan tin
+            else 
+                p No room chat

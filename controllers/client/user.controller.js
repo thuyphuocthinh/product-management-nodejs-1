@@ -65,6 +65,20 @@ const loginPost = async (req, res) => {
     }
 
     res.cookie("tokenUser", emailExist.tokenUser);
+    await User.updateOne(
+      {
+        _id: emailExist.id,
+        deleted: false,
+        status: "active",
+      },
+      {
+        statusOnline: "online",
+      }
+    );
+
+    _io.once("connection", (socket) => {
+      socket.broadcast.emit("SERVER_RETURN_USER_ONLINE", emailExist.id);
+    });
 
     // Save user_id into cart collection
     await Cart.updateOne(
@@ -83,8 +97,24 @@ const loginPost = async (req, res) => {
 };
 
 const logout = async (req, res) => {
-  res.clearCookie("tokenUser");
-  res.redirect("/user/login");
+  try {
+    await User.updateOne(
+      {
+        _id: res.locals.user.id,
+        deleted: false,
+      },
+      {
+        statusOnline: "offline",
+      }
+    );
+    _io.once("connection", (socket) => {
+      socket.broadcast.emit("SERVER_RETURN_USER_OFFLINE", emailExist.id);
+    });
+    res.clearCookie("tokenUser");
+    res.redirect("/user/login");
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const getForgotPasswordPage = async (req, res) => {
